@@ -8,7 +8,7 @@ router.post('/update/payment', async(req,res) =>  {
     return await PaypalController.updatePayment(req,res);
 });
 
-router.use(authController.verifyToken);
+//router.use(authController.verifyToken);
 router.post('/success', async(req,res) =>  {
     return await PaypalController.success(req,res);
 });
