@@ -12,15 +12,6 @@ class Payments {
         return true;
     }
 
-    // async createPagseguroPayment(payments) {
-    //     const payment = await PaymentSchema.create({ 
-    //         meio : 'PAGSEGURO',
-    //         payment : payments
-    //     })
-    //     if(!payment) { return false};
-    //     return true;
-    // }
-
     async createMercadopagoPayment(payments, orderId) {
         const payment = await PaymentSchema.create({ 
             meio : 'MERCADOPAGO',

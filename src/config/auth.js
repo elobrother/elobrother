@@ -1,4 +1,4 @@
 module.exports =
 {
-    "secret" : "valarmorghulis"
+    secret : process.env.PORT || "valarmorghulis"
 }

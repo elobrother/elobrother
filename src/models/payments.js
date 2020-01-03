@@ -3,7 +3,7 @@ const { Schema , model } = require('mongoose');
 const PaymentsSchema = new Schema({
     meio : {
         type : String,
-        enum : [ 'PAGSEGURO', 'MERCADOPAGO', 'PAYPAL'],
+        enum : [ 'MERCADOPAGO', 'PAYPAL'],
         required : true
     },
     orderId : {

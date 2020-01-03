@@ -62,7 +62,7 @@ class ElosController {
 
     async md10GetValue(req, res) {
         try {
-            const { eloName, match } = req.body;
+            const { eloName, match } =  req.body;
             const elo = (await Elos.find({ "name" : eloName.toUpperCase()})).shift();
             if(!elo) { return res.status(200).send({ message : 'Elo não achado na base de Dados'})}
             const days = match >= 8 ? 2 : 1

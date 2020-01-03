@@ -2117,14 +2117,6 @@ package-json@^4.0.0:
     registry-url "^3.0.3"
     semver "^5.1.0"
 
-pagseguro@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/pagseguro/-/pagseguro-0.1.0.tgz#51b56b9050491697019bbedb1767580869c544c5"
-  integrity sha1-UbVrkFBJFpcBm77bF2dYCGnFRMU=
-  dependencies:
-    jstoxml "0.1.x"
-    request "2.9.x"
-
 parseqs@0.0.5:
   version "0.0.5"
   resolved "https://registry.yarnpkg.com/parseqs/-/parseqs-0.0.5.tgz#d5208a3738e46766e291ba2ea173684921a8b89d"
