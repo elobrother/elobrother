@@ -15,7 +15,7 @@ router.post('/login/admin', async (req, res) => {
 router.post('/create', UserController.create);
 router.get('/:id', UserController.getUser);
 
-router.use(authController.verifyToken);
+//router.use(authController.verifyToken);
 
 router.get('/', UserController.getAll);
 router.put('/:id', UserController.update);
