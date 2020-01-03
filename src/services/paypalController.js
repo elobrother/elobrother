@@ -156,11 +156,11 @@ class PaypalController {
       }
 
       async updatePayment(req, res) {
-          try {
+        try {
+            console.log(req.body);
             if (req.body.action === "payment.updated") {
                 const payment = paypal.payment.findById(req.body.data.id);
-
-              }
+            }
             return res.status(200).send({ message : 'Ok'})
         }catch(err) {
             console.log(err)
