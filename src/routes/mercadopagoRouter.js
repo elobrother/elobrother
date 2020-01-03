@@ -6,7 +6,7 @@ const authController = require('../controllers/authController');
 
 router.post('/update/payment', MercadoPagoController.updatePayment);
 
-//router.use(authController.verifyToken);
+router.use(authController.verifyToken);
 
 router.post('/', MercadoPagoController.buy);
 router.post('/success', MercadoPagoController.success);

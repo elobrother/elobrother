@@ -158,7 +158,7 @@ class PaypalController {
       async updatePayment(req, res) {
           try {
             if (req.body.action === "payment.updated") {
-                const payment = MercadoPago.payment.findById(req.body.data.id);
+                const payment = paypal.payment.findById(req.body.data.id);
 
               }
             return res.status(200).send({ message : 'Ok'})
