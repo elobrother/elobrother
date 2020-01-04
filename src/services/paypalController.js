@@ -33,8 +33,8 @@ class PaypalController {
             "intent": "sale",
             "payer": { payment_method: "paypal" },
             "redirect_urls": {
-                "return_url": "http://localhost:8080/sucesso-paypal",
-                "cancel_url": "https://elobrother-app.web.app/payments"
+                "return_url": "https://elobrother.com.br/sucesso-paypal",
+                "cancel_url": "https://elobrother.com.br/payments"
             },
             "transactions": [{
                 "item_list": { "items": carrinho },

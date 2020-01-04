@@ -62,9 +62,9 @@ class MercadoPagoController {
             auto_return : "all",
             external_reference : "23132322",
             back_urls : {
-              success : "http://localhost:8080/sucesso-mercadopago",
-              pending : "http://localhost:8080/sucesso-mercadopago",
-              failure : "https://elobrother-app.web.app/payments",
+              success : "https://elobrother.com.br/sucesso-mercadopago",
+              pending : "https://elobrother.com.br/sucesso-mercadopago",
+              failure : "https://elobrother.com.br/payments",
             }
           }
 
