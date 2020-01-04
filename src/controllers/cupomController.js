@@ -14,18 +14,18 @@ class CupomController {
     async save(cupom) {
         try {
         cupom.amount--;
-        if (cupom.save()){
+        if (await cupom.save()){
             return true;
         }
         return false;
         }catch (err) {
-            return err
+            return false;
         }
     };
 
     async validate(req, res) {
         try {
-            const { name } = req.params;
+            const name  = req.params.id;
             const cupom = await Cupom.find({ 'name' : name});
             if(!cupom){ return res.status(200).send({ message : 'Cupom não Existe!'})};
             if(cupom[0].amount === 0 ) { return res.status(200).send({ message : 'Cupom não disponível'}) };

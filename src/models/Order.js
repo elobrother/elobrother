@@ -10,7 +10,7 @@ const OrderSchema = new Schema({
     },
     tipo : {
         type: String,
-        enum : ['ELOBOOST', 'ELOCOACH'],
+        enum : ['ELOBOOST', 'ELOCOACH', 'MD10'],
         required : true
     },
     status : {
