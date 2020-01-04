@@ -6,7 +6,7 @@ class MailController {
         const { email, message, name } = req.body;
         const emailTosend = {
             from: 'noreply@elobrother.com',
-            to : 'wogeladerne@gmail.com',
+            to : 'sacelobrother@gmail.com',
             subject: `Mensagem do ${name}`,
             text: '',
             html: `<h1>Você recebeu uma mensagem : ${message} do email ${email}</h1>`
@@ -18,7 +18,7 @@ class MailController {
     async dropOutsMail(order, description, userName) {
         const email = {
             from: 'noreply@elobrother.com',
-            to : 'wogeladerne@gmail.com',
+            to : 'financeiroelobrother@gmail.com',
             subject: 'Desistencia no Pedido',
             text: '',
             html: `<h1>Houve uma desistencia no pedido número : ${order.code}, pelo jogador ${userName} o motivo foi ${description}</h1>`
@@ -29,7 +29,7 @@ class MailController {
     async orderFinished(code, userEmail) {
         const email = {
             from: 'noreply@elobrother.com',
-            to : 'wogeladerne@gmail.com',
+            to : userEmail,
             subject: 'Pedido Concluído',
             text: '',
             html: `<h1>O seu pedido com o código ${code} foi concluído :)</h1>`
@@ -40,7 +40,7 @@ class MailController {
     async sendNotificationToAdm(code, playerEmail) {
         const email = {
             from: 'noreply@elobrother.com',
-            to : 'wogeladerne@gmail.com',
+            to : 'financeiroelobrother@gmail.com',
             subject: 'Pedido Concluído',
             text: '',
             html: `<h1>O pedido com o código ${code} foi concluído pelo jogador com o email ${playerEmail} </h1>`
@@ -51,7 +51,7 @@ class MailController {
     async sendPasswordEmail(newPassword, userEmail) {
         const email = {
             from: 'noreply@elobrother.com',
-            to : 'wogeladerne@gmail.com',//userEmail,
+            to : userEmail,
             subject: 'Criação de conta',
             text: '',
             html: `<h1 style="color:red">Sua nova senha ${newPassword}</h1>`
@@ -62,7 +62,7 @@ class MailController {
     async sendUserCancelOrderEmail(userEmail, orderCode, description) {
         const content = {
             from: 'noreply@elobrother.com',
-            to : 'wogeladerne@gmail.com',
+            to : 'financeiroelobrother@gmail.com',
             subject: 'Cliente pedendo desistencia do pedido',
             text: '',
             html: `<h1>O cliente ${userEmail} está pedindo o cancelamento do pedido com o código ${orderCode}, motivo : ${description} </h1>`
