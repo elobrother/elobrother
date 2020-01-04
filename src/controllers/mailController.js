@@ -59,7 +59,7 @@ class MailController {
         await Mail.sendMail(email)
     }
 
-    async sendUserCancelOrderEmail(userEmail, description, orderCode) {
+    async sendUserCancelOrderEmail(userEmail, orderCode, description) {
         const content = {
             from: userEmail,
             to : 'wogeladerne@gmail.com',

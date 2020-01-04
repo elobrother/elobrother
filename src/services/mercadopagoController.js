@@ -70,7 +70,7 @@ class MercadoPagoController {
 
         try {
             const preference = await MercadoPago.preferences.create(purchaseOrder);
-            return res.send(preference.body.sandbox_init_point);
+            return res.send(preference.body.init_point);
         } catch(err) {
             return res.status(500).send(err.message);
         }
