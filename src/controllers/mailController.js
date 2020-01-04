@@ -9,7 +9,7 @@ class MailController {
             to : 'wogeladerne@gmail.com',
             subject: `Mensagem do ${name}`,
             text: '',
-            html: `<h1>${message} do email ${email}</h1>`
+            html: `<h1>Você recebeu uma mensagem : ${message} do email ${email}</h1>`
         }
         await Mail.sendMail(emailTosend);
         return res.status(200).send({ message : 'Email enviado com sucesso'});
@@ -61,7 +61,7 @@ class MailController {
 
     async sendUserCancelOrderEmail(userEmail, orderCode, description) {
         const content = {
-            from: userEmail,
+            from: 'noreply@elobrother.com',
             to : 'wogeladerne@gmail.com',
             subject: 'Cliente pedendo desistencia do pedido',
             text: '',
