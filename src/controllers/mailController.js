@@ -5,11 +5,11 @@ class MailController {
     async sendMail(req, res) {
         const { email, message, name } = req.body;
         const emailTosend = {
-            from: email,
+            from: 'noreply@elobrother.com',
             to : 'wogeladerne@gmail.com',
             subject: `Mensagem do ${name}`,
             text: '',
-            html: `<h1>${message}</h1>`
+            html: `<h1>${message} do email ${email}</h1>`
         }
         await Mail.sendMail(emailTosend);
         return res.status(200).send({ message : 'Email enviado com sucesso'});
