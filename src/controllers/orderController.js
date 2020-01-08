@@ -1,7 +1,7 @@
 const OrderSchema = require('../models/Order');
 const DropoutsSchema = require('../models/Dropouts');
 const PaypalController = require('../services/paypalController');
-//const MercadoPagoController = require('../services/mercadopagoController');
+const MercadoPagoController = require('../services/mercadopagoController');
 const Payment = require('../models/payments');
 const Mail = require('./mailController');
 const User = require('../models/User');
@@ -174,9 +174,9 @@ class OrderController  {
     async refund(req, res) {
         try {
             const { orderId } = req.body;
-            let payment = await Payment.find({ orderId : mongoose.Types.ObjectId(orderId) });
+            let payment = await Payment.findOne({ orderId : mongoose.Types.ObjectId(orderId) });
             if(payment.length < 1) { return res.send({ message : 'Erro ao achar o pagamento desse pedido'})};
-            if( payment[0].meio  === 'MERCADOPAGO') { return await MercadoPagoController.refund(req, res, payment[0].payment.id, orderId); }
+            if( payment[0].meio  === 'MERCADOPAGO') { return await MercadoPagoController.refund(req, res, payment.payment.id, orderId, payment); }
             return await PaypalController.refund(req, res, orderId);
         }catch(err) {
             return status(400).send(err.message)

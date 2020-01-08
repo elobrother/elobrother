@@ -100,11 +100,11 @@ class MercadoPagoController {
       }
     }
 
-    async refund(req, res, paymentId,orderId) {
+    async refund(req, res, paymentId,orderId, payment) {
       try { 
         const refound = await MercadoPago.payment.refund(paymentId);
         if ( !refound ) { return res.status(200).send({ message : 'Houve um erro na devolução'})};
-        const message = await MercadoStatus[refound.response.status](orderId);
+        const message = await MercadoStatus[refound.response.status](orderId, payment);
         return res.status(200).send({ message })
       }catch(err) {
         return res.status(400).send(err.message)
