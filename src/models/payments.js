@@ -6,6 +6,9 @@ const PaymentsSchema = new Schema({
         enum : [ 'MERCADOPAGO', 'PAYPAL'],
         required : true
     },
+    status : {
+        enum : ['DEVOLVIDO', 'APROVADO', 'RECUSADO']
+    },
     orderId : {
         type : Schema.Types.ObjectId
     },

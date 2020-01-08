@@ -21,7 +21,7 @@ const OrderSchema = new Schema({
     },
     paymentsStatus : {
         type: String,
-        enum : ['AGUARDANDO', 'APROVADO', 'DEVOLVIDO', 'REJEITADO'],
+        enum : ['AGUARDANDO', 'APROVADO', 'DEVOLVIDO', 'RECUSADO'],
         uppercase : true
     },
     days : {

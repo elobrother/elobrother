@@ -34,7 +34,7 @@ class PaypalController {
             "payer": { payment_method: "paypal" },
             "redirect_urls": {
                 "return_url": "https://elobrother.com.br/sucesso-paypal",
-                "cancel_url": "https://elobrother.com.br/payments"
+                "cancel_url": "https://elobrother.com.br"
             },
             "transactions": [{
                 "item_list": { "items": carrinho },
@@ -58,15 +58,15 @@ class PaypalController {
         let auth = '';
         const options = {
             method: 'POST',
-            uri: `https://api.sandbox.paypal.com/v1/oauth2/token`,
+            uri: `https://api.paypal.com/v1/oauth2/token`,
             headers : { 
                 "Content-Type" : "application/json",
                 "Accept-Language": "en_US",
                 "content-type": "application/x-www-form-urlencoded"
             },
             auth: {
-                user : "AZSF1eKLwJPyfpviv-STLjFj6TI7E-xkGnNmKihHqj8xcTCa4xu7mlY1O1MqEUzZHMQ6VHzZ8r_e6ZgA",
-                pass : "EFb3OK3moU9djk-rELq411sGZvl-fXTXHc9OCAc7j3mIv0slNBQaQMFLyfxp2LNENQzLnzcqTzg87LrD"
+                user : "AWKmxZFNedyaampPNNoiXccr0cd2qHN7zaqZW7HX73htyXFoL9y15MKezibC4roUyGhbx6EXhDh7Me4f",
+                pass : "EGVlAO6lSO7sIgwuSfLsKIWfHlxKB7LdbIkek89ayMdGDqb1_N7tAiAY3SeY0MJ-d9kfKMzmgOfYk5Qq"
             },
             form : {
                 grant_type : "client_credentials"
@@ -90,7 +90,7 @@ class PaypalController {
             const paymentId = req.body.paymentId;
             const options = {
                 method: 'POST',
-                uri: `https://api.sandbox.paypal.com/v1/payments/payment/${paymentId}/execute`,
+                uri: `https://api.paypal.com/v1/payments/payment/${paymentId}/execute`,
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${access_token}` 
@@ -106,7 +106,10 @@ class PaypalController {
                 if(!payments) { return res.status(400).send({ message : 'Houve um erro na criação do Pagamento meio PAYPAL'}); };
                 const order = await Order.findById(resp.transactions[0].item_list.items[0].sku);
                 order.paymentsStatus = 'APROVADO';
+                payment.status = 'APROVADO';
                 await order.save();
+                await payment.save();
+                req.io.emit('newOrder', order);
                 return res.status(200).send({ message : 'Tudo Funcionando'});
             })
             .catch((err) => {
@@ -120,14 +123,13 @@ class PaypalController {
       async refund(req, res, orderId) {
         try {
             const access_token = await this.getAuth();
-            const { orderId } = req.body;
             let payment = await Payment.find({ orderId : mongoose.Types.ObjectId(orderId) });
             if(payment.length) {
                 payment = payment.shift();
             }
             const options = {
                 method: 'POST',
-                uri: ` https://api.sandbox.paypal.com/v1/payments/sale/${payment.payment.transactions[0].related_resources[0].sale.id}/refund`,
+                uri: `https://api.paypal.com/v1/payments/sale/${payment.payment.transactions[0].related_resources[0].sale.id}/refund`,
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${access_token}`
@@ -139,8 +141,8 @@ class PaypalController {
                 if (resp.state === "completed") {
                     const order = await Order.findById(orderId);
                     if(!order || !payment) { return res.status(200).send({ message : 'Erro ao atualizar peido ou ordem após refound'})}
-                    order.paymentsStatus === 'DEVOLVIDO';
-                    payment.status === 'DEVOLVIDO';
+                    order.paymentsStatus = 'DEVOLVIDO';
+                    payment.status = 'DEVOLVIDO';
                     await payment.save();
                     await order.save();
                     return res.status(200).send({ message : 'Pedido estornado com sucesso'});
@@ -157,13 +159,42 @@ class PaypalController {
 
       async updatePayment(req, res) {
         try {
-            console.log(req.body);
-            if (req.body.action === "payment.updated") {
-                const payment = paypal.payment.findById(req.body.data.id);
+            if ( req.body.event_type === "PAYMENT.SALE.REFUNDED" ) {
+                const payment = await Payment.findOne({ 'payment.transactions.related_resources.sale.parent_payment' : req.body.parent_payment})
+                if(payment.status === 'DEVOLVIDO') {  return res.status(200).send({message :'ok'}); }
+                const { orderId }  = payment;
+                const order = await Order.findOne(orderId);
+                order.paymentsStatus = 'DEVOLVIDO';
+                payment.status = 'DEVOLVIDO';
+                await order.save();
+                await payment.save();
+                return res.status(200).send({message :'ok'});
             }
-            return res.status(200).send({ message : 'Ok'})
+            if ( req.body.event_type === "PAYMENT.SALE.COMPLETED" ) {
+                const payment = await Payment.findOne({ 'payment.transactions.related_resources.sale.parent_payment' : req.body.parent_payment})
+                if(payment.status === 'APROVADO') {  return res.status(200).send({message :'ok'}); }
+                const { orderId }  = payment;
+                const order = await Order.findOne(orderId);
+                order.paymentsStatus = 'APROVADO';
+                payment.status = 'APROVADO';
+                await order.save();
+                await payment.save();
+                req.io.emit('newOrder', order);
+                return res.status(200).send({message :'ok'});
+            }
+            if ( req.body.event_type === "PAYMENT.SALE.DENIED" ) {
+                const payment = await Payment.findOne({ 'payment.transactions.related_resources.sale.parent_payment' : req.body.parent_payment})
+                if(payment.status === 'RECUSADO') {  return res.status(200).send({message :'ok'}); }
+                const { orderId }  = payment;
+                const order = await Order.findOne(orderId);
+                order.paymentsStatus = 'RECUSADO';
+                payment.status = 'RECUSADO';
+                await payment.save();
+                await order.save();
+                return res.status(200).send({message :'ok'});
+            }
         }catch(err) {
-            console.log(err)
+            console.error(err)
         }
     }
 }

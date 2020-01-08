@@ -5,33 +5,43 @@ const Order = require('../models/Order');
 const Payment = require('../models/payments');
 
 const MercadoStatus = {
-  pending : async (id) =>  {
+  pending : async (id, payment) =>  {
     const order = await Order.findById(id);
     order.paymentsStatus = 'AGUARDANDO';
+    payment.status = 'AGUARDANDO';
+    await payment.save();
     await order.save();
     return 'Pagamento via Mercado Pago retornado com sucesso'
   },
-  approved : async (id) => {
+  approved : async (id, payment) => {
     const order = await Order.findById(id);
     order.paymentsStatus = 'APROVADO';
+    payment.status = 'APROVADO';
+    await payment.save();
     await order.save();
     return 'Pagamento via Mercado Pago retornado com sucesso'
   },
-  authorized : async (id) => {
+  authorized : async (id, payment) => {
     const order = await Order.findById(id);
     order.paymentsStatus = 'APROVADO';
+    payment.status = 'APROVADO';
+    await payment.save();
     await order.save();
     return 'Pagamento via Mercado Pago retornado com sucesso'
   },
-  rejected :  async (id) => {
+  rejected :  async (id, payment) => {
     const order = await Order.findById(id);
-    order.paymentsStatus = 'REJEITADO';
+    order.paymentsStatus = 'RECUSADO';
+    payment.status = 'RECUSADO';
+    await payment.save();
     await order.save();
     return 'Pagamento via Mercado Pago retornado com sucesso' 
   },
-  refunded : async (id) => {
+  refunded : async (id, payment) => {
     const order = await Order.findById(id);
     order.paymentsStatus = 'DEVOLVIDO';
+    payment.status = 'DEVOLVIDO';
+    await payment.save();
     await order.save();
     return 'Pagamento via Mercado Pago retornado com sucesso'
   },
@@ -64,7 +74,7 @@ class MercadoPagoController {
             back_urls : {
               success : "https://elobrother.com.br/sucesso-mercadopago",
               pending : "https://elobrother.com.br/sucesso-mercadopago",
-              failure : "https://elobrother.com.br/payments",
+              failure : "https://elobrother.com.br",
             }
           }
 
@@ -109,7 +119,7 @@ class MercadoPagoController {
         if ( action === 'payment.updated') {
           const payment = await MercadoPago.payment.findById(paymentId);
           const paymentSchema = await (await Payment.find({ 'payment.id' : parseInt(paymentId) })).shift();
-          await MercadoStatus[payment.response.status](paymentSchema.orderId)
+          await MercadoStatus[payment.response.status](paymentSchema.orderId, paymentSchema)
         }
         return res.status(200).send({ message : 'Ok'});
       } catch(err) {
