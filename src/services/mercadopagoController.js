@@ -93,7 +93,7 @@ class MercadoPagoController {
         if ( !payment ) {  return res.status(200).send({ message : 'Erro na na busca do pagamento via mercado pago'})}
         const paymentSchema = await PaymentsController.createMercadopagoPayment(payment.response, OrderId );
         if(!paymentSchema) { return res.status(400).send({ message : 'Houve um erro na criação do Pagamento meio Mercado Pago'}); };
-        const message = await MercadoStatus[payment.response.status](OrderId);
+        const message = await MercadoStatus[payment.response.status](OrderId, paymentSchema);
         return res.status(200).send({ message });
       }catch(err) {
         return res.status(400).send(err.message)
