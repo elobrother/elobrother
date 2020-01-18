@@ -12,23 +12,36 @@ class ElosController {
     //     }
     // }
 
+    // async updateElo(req, res) {
+    //     try {
+    //         const { name, value } = req.body 
+    //         const elos = await Elos.find({ 'name' : new RegExp(name.toUpperCase()) });
+    //         if(!elos.length) { return res.status(200).send({ message : 'Não foi achado um elo com esse nome'})};
+    //         if(elos.length === 1 && elos[0].name.substr(-5) === 'COACH'){
+    //             elos[0].value = value
+    //             await elos[0].save();
+    //             return res.status(200).send({ message : 'Valor do Elo Coach Atualizado com sucesso'})
+    //         }
+    //         for(let elo of elos) {
+    //             if(elo.name.substr(-5) === 'COACH') {continue;}
+    //             if(elo.name.substr(-2) === 'IV') {continue;}
+    //             if(elo.name.substr(-4) === 'MD10') {continue;}
+    //             elo.value = value;
+    //             await elo.save();
+    //         }
+    //         return res.status(200).send({ message : 'Valor do elo Atualizado com sucesso'})
+    //     }catch(err) {
+    //         res.status(500).send(err.message)
+    //     }
+    // }
+
     async updateElo(req, res) {
         try {
-            const { name, value } = req.body 
-            const elos = await Elos.find({ 'name' : new RegExp(name.toUpperCase()) });
-            if(!elos.length) { return res.status(200).send({ message : 'Não foi achado um elo com esse nome'})};
-            if(elos.length === 1 && elos[0].name.substr(-5) === 'COACH'){
-                elos[0].value = value
-                await elos[0].save();
-                return res.status(200).send({ message : 'Valor do Elo Coach Atualizado com sucesso'})
-            }
-            for(let elo of elos) {
-                if(elo.name.substr(-5) === 'COACH') {continue;}
-                if(elo.name.substr(-2) === 'IV') {continue;}
-                if(elo.name.substr(-4) === 'MD10') {continue;}
-                elo.value = value;
-                await elo.save();
-            }
+            const { name, value } = req.body;
+            const elo =     await Elos.find({ 'name' : name.toUpperCase() });
+            if(!elo) { return res.status(200).send({ message : 'Elo não achado na base de dados'})};
+            elo[0].value = value;
+            await elo[0].save();
             return res.status(200).send({ message : 'Valor do elo Atualizado com sucesso'})
         }catch(err) {
             res.status(500).send(err.message)

@@ -58,6 +58,10 @@ class OrderController  {
             order.userPlayer = null;
             if(!order) { return res.status(200).send({ message : 'Houve um ao atualizar a ordem'}) };
             const user = (await User.find(mongoose.Types.ObjectId(idUser)).lean()).shift();
+            user.pedidos = user.pedidos.filter((e) => {
+                return !(e == id)
+            });
+            await user.save();
             const dropouts = await  DropoutsSchema.create({
                 user,
                 order,
