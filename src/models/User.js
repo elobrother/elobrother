@@ -24,7 +24,7 @@ const UserSchema = new Schema({
     phoneNumber : {
         type : String
     },
-    CPF : {
+    cpf : {
         type : String
     },
     status : {
