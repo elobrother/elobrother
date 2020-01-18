@@ -1,4 +1,4 @@
 module.exports =
 {
-    "access_token" : process.env.ACESS_TOKEN_MERCADO_PAGO || 'APP_USR-3517230604030624-010400-e971680bc9267f7d3c36e5fb62572527-507543600',
+    "access_token" : process.env.ACESS_TOKEN_MERCADO_PAGO,
 }
