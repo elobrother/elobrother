@@ -7,7 +7,8 @@ const PaymentsSchema = new Schema({
         required : true
     },
     status : {
-        enum : ['DEVOLVIDO', 'APROVADO', 'RECUSADO']
+        type : String,
+        enum : ['DEVOLVIDO', 'APROVADO', 'RECUSADO', 'AGUARDANDO']
     },
     orderId : {
         type : Schema.Types.ObjectId

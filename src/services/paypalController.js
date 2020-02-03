@@ -106,9 +106,9 @@ class PaypalController {
                 if(!payments) { return res.status(400).send({ message : 'Houve um erro na criação do Pagamento meio PAYPAL'}); };
                 const order = await Order.findById(resp.transactions[0].item_list.items[0].sku);
                 order.paymentsStatus = 'APROVADO';
-                payment.status = 'APROVADO';
+                payments.status = 'APROVADO';
                 await order.save();
-                await payment.save();
+                await payments.save();
                 req.io.emit('newOrder', order);
                 return res.status(200).send({ message : 'Tudo Funcionando'});
             })

@@ -9,7 +9,7 @@ class Payments {
             payment : payments
         })
         if(!payment) { return false};
-        return true;
+        return payment;
     }
 
     async createMercadopagoPayment(payments, orderId) {
@@ -19,7 +19,7 @@ class Payments {
             payment : payments
         })
         if(!payment) { return false};
-        return true;
+        return payment;
     }
 }
 
