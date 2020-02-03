@@ -4,6 +4,7 @@ const paypalConfig = require('../config/paypal');
 const request = require('request-promise');
 const PaymentsController = require('../controllers/paymentsController');
 const Order = require('../models/Order');
+const Log = require('../models/log')
 const Payment = require('../models/payments');
 const mongoose = require('mongoose');
 
@@ -163,6 +164,10 @@ class PaypalController {
                 const payment = await Payment.findOne({ 'payment.transactions.related_resources.sale.parent_payment' : req.body.parent_payment})
                 if(payment.status === 'DEVOLVIDO') {  return res.status(200).send({message :'ok'}); }
                 const { orderId }  = payment;
+                await Log.create({
+                    meio : 'PAYPAL',
+                    data : req.body
+                })
                 const order = await Order.findOne(orderId);
                 order.paymentsStatus = 'DEVOLVIDO';
                 payment.status = 'DEVOLVIDO';
@@ -174,6 +179,10 @@ class PaypalController {
                 const payment = await Payment.findOne({ 'payment.transactions.related_resources.sale.parent_payment' : req.body.parent_payment})
                 if(payment.status === 'APROVADO') {  return res.status(200).send({message :'ok'}); }
                 const { orderId }  = payment;
+                await Log.create({
+                    meio : 'PAYPAL',
+                    data : req.body
+                })
                 const order = await Order.findOne(orderId);
                 order.paymentsStatus = 'APROVADO';
                 payment.status = 'APROVADO';
@@ -186,6 +195,10 @@ class PaypalController {
                 const payment = await Payment.findOne({ 'payment.transactions.related_resources.sale.parent_payment' : req.body.parent_payment})
                 if(payment.status === 'RECUSADO') {  return res.status(200).send({message :'ok'}); }
                 const { orderId }  = payment;
+                await Log.create({
+                    meio : 'PAYPAL',
+                    data : req.body
+                })
                 const order = await Order.findOne(orderId);
                 order.paymentsStatus = 'RECUSADO';
                 payment.status = 'RECUSADO';

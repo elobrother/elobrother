@@ -116,6 +116,10 @@ class MercadoPagoController {
       try {
         const paymentId = req.query['data.id'];
         const action = req.body.action;
+        await Log.create({
+          meio : 'MERCADOPAGO',
+          data : req.body
+      })
         if ( action === 'payment.updated') {
           const payment = await MercadoPago.payment.findById(paymentId);
           const paymentSchema = await (await Payment.find({ 'payment.id' : parseInt(paymentId) })).shift();
