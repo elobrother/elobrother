@@ -4,7 +4,7 @@ const paypalConfig = require('../config/paypal');
 const request = require('request-promise');
 const PaymentsController = require('../controllers/paymentsController');
 const Order = require('../models/Order');
-const Log = require('../models/log')
+const Log = require('../models/log');
 const Payment = require('../models/payments');
 const mongoose = require('mongoose');
 

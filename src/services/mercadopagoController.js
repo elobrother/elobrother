@@ -2,6 +2,7 @@ const MercadoPago = require('mercadopago');
 const mercadopagoConfig = require('../config/mercadopago.js');
 const PaymentsController = require('../controllers/paymentsController');
 const Order = require('../models/Order');
+const Log = require('../models/log');
 const Payment = require('../models/payments');
 
 const MercadoStatus = {
