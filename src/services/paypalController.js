@@ -85,7 +85,8 @@ class PaypalController {
     }
       
     async success(req, res) {
-        try { 
+        try {
+            console.log('aa')
             const access_token = await this.getAuth();
             const payerId = req.body.payerId;
             const paymentId = req.body.paymentId;
