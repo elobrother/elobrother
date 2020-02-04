@@ -111,6 +111,20 @@ class OrderController  {
         }
     };
 
+    async updatePaymentStatus(req, res) {
+        try {
+            const { id } = req.params;
+            const { status } = req.body;
+            const order = await OrderSchema.findById(id);
+            order.paymentsStatus = status;
+            await order.save();
+            req.io.emit('newOrder', order);
+            return res.status(200).send(order);
+        }catch(err){
+            return res.status(500).send(err.message);
+        }
+    };
+
     async delete(req, res) {
         try {
             const { id } = req.params;

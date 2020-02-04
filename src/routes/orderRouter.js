@@ -15,6 +15,7 @@ router.post('/user/cancelOrder', OrderController.userCancelOrder);
 router.put('/updateUser/:id', OrderController.updateUser);
 router.post('/dropouts/:id', OrderController.dropoutsOrder);
 router.put('/updateStatus/:id', OrderController.updateStatus);
+router.put('/updatePaymentStatus/:id', OrderController.updatePaymentStatus);
 router.delete('/:id', OrderController.delete);
 router.post('/getPlayer/Password', OrderController.getPlayerPassword);
 router.post('/refund', async (req, res) =>  {
