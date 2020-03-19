@@ -6,7 +6,7 @@ class MailController {
         const { email, message, name } = req.body;
         const emailTosend = {
             from: 'noreply@elobrother.com',
-            to : 'sacelobrother@gmail.com',
+            to : 'admelobrother@gmail.com',
             subject: `Mensagem do ${name}`,
             text: '',
             html: `<h1>Você recebeu uma mensagem : ${message} do email ${email}</h1>`
