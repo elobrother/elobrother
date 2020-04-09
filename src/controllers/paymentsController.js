@@ -21,6 +21,17 @@ class Payments {
         if(!payment) { return false};
         return payment;
     }
+    async search(req, res) {
+        const { orderIds } = req.body;
+
+        const payment = await PaymentSchema.find().where('orderIds').in(orderIds);
+
+        if (!payment) {
+            return res.status(400).json({ error: 'Payments not Found'});
+        }
+        return res.json(payment);
+
+    }
 }
 
 module.exports = new Payments();
